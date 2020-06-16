@@ -1,0 +1,29 @@
+replicaCount: 1
+image:
+  pullPolicy: Always
+  name: screatch/phpapp:latest
+service:
+  name: phpapp
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 9000
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+basedomain: php-fpm.test-task
+ingress:
+  enabled: true
+  domain: phpapp.test
+env:
+  - name: DB_HOST
+    value: postgresql.postgresql.svc.cluster.local
+  - name: DB_USERNAME
+    value: postgres
+  - name: DB_PASSWORD
+    value: {{ .Environment.Values.postgresql.password }}
+  - name: DB_NAME
+    value: phpapp

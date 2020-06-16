@@ -1,0 +1,4 @@
+postgresqlDatabase: phpapp
+postgresqlPassword: {{ .Environment.Values.postgresql.password }}
+replication:
+  enabled: true

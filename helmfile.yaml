@@ -1,0 +1,33 @@
+repositories:
+- name: bitnami
+  url: https://charts.bitnami.com
+
+- name: ingress-nginx
+  url: https://kubernetes.github.io/ingress-nginx
+
+environments:
+  default:
+    secrets:
+    - charts/helm_vars/secrets.yaml
+
+releases:
+- name: phpapp
+  namespace: phpapp
+  createNamespace: true
+  chart: ./charts/phpapp
+  values:
+    - charts/phpapp/values.yaml.gotmpl
+
+- name: postgresql
+  namespace: postgresql
+  createNamespace: true
+  chart: bitnami/postgresql
+  version: 8.10.x
+  values:
+    - charts/postgresql/values.yaml.gotmpl
+
+# - name: ingress-nginx
+#   namespace: nginx
+#   createNamespace: true
+#   chart: ingress-nginx/ingress-nginx
+#   version: 2.4.x
