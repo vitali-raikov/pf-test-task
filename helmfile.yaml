@@ -26,8 +26,6 @@ releases:
   values:
     - charts/postgresql/values.yaml.gotmpl
 
-# - name: ingress-nginx
-#   namespace: nginx
-#   createNamespace: true
-#   chart: ingress-nginx/ingress-nginx
-#   version: 2.4.x
+- name: ingress-nginx
+  namespace: kube-system
+  chart: ./charts/nginx

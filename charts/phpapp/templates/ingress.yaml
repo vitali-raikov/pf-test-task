@@ -8,7 +8,7 @@ kind: ConfigMap
 metadata:
   name: fpm-cm
 data:
-  SCRIPT_FILENAME: "app/index.php"
+  SCRIPT_FILENAME: /app$fastcgi_script_name
 
 ---
 
@@ -24,6 +24,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
     nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
     nginx.ingress.kubernetes.io/fastcgi-params-configmap: "fpm-cm"
+
 spec:
   rules:
   - host: {{ .Values.basedomain }}

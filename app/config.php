@@ -12,8 +12,9 @@ if(!$db_connection){
 # Create schema if not exists
 $query = "CREATE TABLE IF NOT EXISTS blacklist (
     id SERIAL PRIMARY KEY,
+    path VARCHAR(255) NOT NULL,
     ip_address VARCHAR(45) UNIQUE NOT NULL,
-    blocked_at DATE DEFAULT CURRENT_DATE NOT NULL
+    blocked_at DATETIME DEFAULT CURRENT_DATE NOT NULL
     );";
 
 pg_query($db_connection, $query);
@@ -29,7 +30,7 @@ $row = pg_fetch_row($result);
 
 if (!empty($row)) {
     $error_message = "Your IP has been blocked at " . $row[0];
-    returnError($error_message, 401);
+    returnError($error_message, 444);
 }
 
 # Custom function to return error as JSON because it looks nice
