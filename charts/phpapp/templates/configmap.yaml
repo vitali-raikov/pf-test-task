@@ -1,25 +1,27 @@
-{{- if .Values.ingress.enabled -}}
----
-
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: nginx-config
 data:
   nginx.conf: |
-    server {
-            listen 80 default_server;
-            server_name  _;
-            index index.php;            location / {
-                try_files $uri $uri/ /index.php?$args;
-            }
+    events {
+    }
+    http {
+      server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
 
-            location ~ \.php$ {
-                fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_pass 127.0.0.1:9000;
-                fastcgi_index index.php;
-                include fastcgi_params;
-                fastcgi_param SCRIPT_FILENAME /scripts$fastcgi_script_name;
-            }
+        # Set nginx to serve files from the shared volume!
+        root /var/www/html;
+        server_name _;
+        location / {
+          try_files $uri $uri/ =404;
         }
-{{- end -}}
+        location ~ \.php$ {
+          include fastcgi_params;
+          fastcgi_param REQUEST_METHOD $request_method;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_pass 127.0.0.1:9000;
+        }
+      }
+    }
