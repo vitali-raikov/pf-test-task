@@ -27,18 +27,6 @@ spec:
           name: nginx-config
 
       initContainers:
-      - name: init
-        image: {{ .Values.image.name }}
-        imagePullPolicy: Always
-        command:
-        - cp
-        - "-r"
-        - "/var/www/html"
-        - "/"
-        volumeMounts:
-        - name: html
-          mountPath: "/html"
-
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.name }}
@@ -55,14 +43,18 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 9000
-          initialDelaySeconds: 5
+          initialDelaySeconds: 2
           periodSeconds: 5
           timeoutSeconds: 2
         volumeMounts:
-        - name: php-socket
-          mountPath: /sock
-        - name: html
-          mountPath: /var/www/html
+          - name: php-socket
+            mountPath: /sock
+          - name: html
+            mountPath: /var/www/html
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "cp -r /app/. /var/www/html"]
 
       - name: nginx
         image: nginx:stable
@@ -74,7 +66,7 @@ spec:
           mountPath: /sock
         - name: nginx-config-volume
           mountPath: /etc/nginx/conf.d/default.conf
-          subPath: nginx.conf
+          subPath: default.conf
           readOnly: true
         - name: html
           mountPath: /var/www/html
