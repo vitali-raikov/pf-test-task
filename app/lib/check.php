@@ -1,23 +1,9 @@
 <?php
 
+# This file performs a check whethever the user is blacklisted or not
 if(count(get_included_files()) == 1) returnError("Direct access to file is not permitted", 401);
 
-# Initialize the DB connection
-$db_connection = pg_connect("host=".$_SERVER['DB_HOST']." port=5432 dbname=".$_SERVER['DB_NAME']." user=".$_SERVER['DB_USERNAME']." password=".$_SERVER['DB_PASSWORD']);
-
-if(!$db_connection){
-    returnError(print_r($_ENV), 500);
-}
-
-# Create schema if not exists
-$query = "CREATE TABLE IF NOT EXISTS blacklist (
-    id SERIAL PRIMARY KEY,
-    path VARCHAR(255) NOT NULL,
-    ip_address VARCHAR(45) UNIQUE NOT NULL,
-    blocked_at DATETIME DEFAULT CURRENT_DATE NOT NULL
-    );";
-
-pg_query($db_connection, $query);
+require 'db.php';
 
 # Get current IP
 $current_ip = $_SERVER['REMOTE_ADDR'];
@@ -30,7 +16,11 @@ $row = pg_fetch_row($result);
 
 if (!empty($row)) {
     $error_message = "Your IP has been blocked at " . $row[0];
+
+    # I do know that 444 means "Connection Closed Without Response" but
+    # I thought it's better to have understanding what application just did
     returnError($error_message, 444);
+    exit;
 }
 
 # Custom function to return error as JSON because it looks nice

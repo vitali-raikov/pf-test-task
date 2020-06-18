@@ -1,9 +1,7 @@
 <?php
 
-# This file contains connection to DB
-# Created initial DB structure if not present
-# And checks if user in blacklist already and if so returns error
-require 'config.php';
+require 'lib/db.php';
+require 'lib/check.php';
 
 # If we gotten this far, then user is not blacklisted and we can insert a record to DB
 $query = "INSERT INTO blacklist (ip_address, path) VALUES ('".$current_ip."', '".$_SERVER['REQUEST_URI']."')";

@@ -1,9 +1,7 @@
 <?php
 
-# This file contains connection to DB
-# Created initial DB structure if not present
-# And checks if user in blacklist already and if so returns error
-require 'config.php';
+require 'lib/db.php';
+require 'lib/check.php';
 
 # We close a DB connection because it's considered a good practice and we don't need it here
 pg_close($db_connection);

@@ -1,0 +1,61 @@
+version: '3.0'
+services:
+  phpapp:
+    build:
+      context: ./app
+    depends_on:
+      - postgres
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./app:/var/www/html
+      - php-socket:/sock
+    environment:
+      - DB_HOST=postgres
+      - DB_PASSWORD=password
+      - DB_USERNAME=postgres
+      - DB_NAME=phpapp
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - phpapp
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./files/default.conf:/etc/nginx/conf.d/default.conf
+      - php-socket:/sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://nginx/status"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # We could persist data here in separate volume
+  # But for testing purposes I decided against that
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=phpapp
+    ports:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Tests
+  tests:
+    build:
+      context: ./tests
+      dockerfile: ./Dockerfile
+    depends_on:
+      - phpapp
+      - nginx
+      - postgres
+volumes:
+  php-socket: {}
