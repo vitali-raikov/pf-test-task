@@ -81,13 +81,15 @@ spec:
           mountPath: /var/www/html
         readinessProbe:
           httpGet:
-            path: /status
+            path: {{ .Values.service.statusEndpoint }}
             port: {{ .Values.service.externalPort }}
+          initialDelaySeconds: 5
           periodSeconds: 10
         livenessProbe:
           httpGet:
-            path: /status
+            path: {{ .Values.service.statusEndpoint }}
             port: {{ .Values.service.externalPort }}
+          initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
         # Introduce a delay to the shutdown sequence to wait for the

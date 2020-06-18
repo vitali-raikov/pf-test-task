@@ -1,10 +1,11 @@
 replicaCount: 1
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   name: screatch/phpapp:latest
 service:
   name: phpapp
   type: LoadBalancer
+  statusEndpoint: /status
   externalPort: 80
   internalPort: 9000
 resources:
@@ -14,10 +15,6 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-basedomain: php-fpm.test-task
-ingress:
-  enabled: true
-  domain: phpapp.test
 env:
   - name: DB_HOST
     value: postgresql.postgresql.svc.cluster.local
