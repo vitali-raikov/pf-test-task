@@ -1,5 +1,6 @@
 ## Description
 
+![](files/demo.gif)
 
 This project deploys PHP application with help of Nginx and PHP-FPM running in separate containers inside the same pod on a Kubernetes cluster. Deployment of PHP application as well as all of it's dependencies is done with Helm3 and Helmfile to simplify the deployment of multiple charts.
 
