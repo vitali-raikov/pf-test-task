@@ -32,37 +32,38 @@ Checking if user is blacklisted and connection to database is separated into sep
 ## Project structure
 
 ```
-/app - Contains PHP application source code
-    /lib
-        check.php - Script to check whethever user is blacklisted or not
-        db.php - Connection to database
-    .dockerignore - List of stuff we don't want in container
-    blacklisted.php - Script which blacklists user IP
-    Dockerfile - Everything needed to make this PHP application work with PHP-FPM
-    index.php - Performs multiplying of n query parameter
-    status.php - Status endpoint which is accessible even after blacklisting, used for liveness and readiness probe
-    unblock.php - Easy way to unblock user (Since in Docker compose we run tests with same database and we don't want to end up with blocked user)
-/charts - Contains all Helm charts
-    /helm_vars - Contains all necessary information for Helm Secrets to function
-        .sops.yaml - Our PGP key fingerprint which is used for encrypting secrets
-        secrets.yaml - Encrypted secrets
-    /phpapp - Helm chart for deploying our PHP app to Kubernetes cluster
-        /templates - All templates we are deploying for our PHP app
-            _helpers.tmpl - Helm helper functions to be used in templates
-            configmap.yaml - Configmap with Nginx config which is needed for PHP FPM setup as well as some additional custom configuration
-            deployment.yaml - Actual deployment of PHP app and Nginx container
-            service.yaml - Service with help of which you will be able to access the application
-        Chart.yaml - Chart metadata
-        values.yaml.gotmpl - Configurable application values, generally you don't need to change anything here for it to work
-    /postgresql - Contains values overriding default values of Bitnaming PostgreSQL Helm Chart
-        values.yaml.gotmpl - List of values which we override for this Helm Chart
-/tests - Contains integration tests for the application, which are run with docker-compose
-    Dockerfile - Since we run this in docker compose, we need to have the tests as Docker container
-    run-tests.py - Quick and ugly Python script to perform integration tests
-/files - Files which didn't fit anywhere else
-    default.conf - Nginx config which Docker compose uses
-docker-compose.yml - Docker compose for local development which reproduces Helm charts pretty closely
-helmfile.yaml - Helmfile which eases the deployment of multiple charts in different namespaces
+project
+│───app - Contains PHP application source code
+│   └───lib
+│           check.php - Script to check whethever user is blacklisted or not
+│           db.php - Connection to database
+│       .dockerignore - List of stuff we don't want│in container
+│       blacklisted.php - Script which blacklists user IP
+│       Dockerfile - Everything needed to make this PHP application work with PHP-FPM
+│       index.php - Performs multiplying of n query parameter
+│       status.php - Status endpoint which is accessible even after blacklisting, used for liveness and readiness probe
+│       unblock.php - Easy way to unblock user (Since in Docker compose we run tests with same database and we don't want to end up with blocked user)
+└────charts - Contains all Helm charts
+│    └──helm_vars - Contains all necessary information for Helm Secrets to function
+│    │      .sops.yaml - Our PGP key fingerprint which is used for encrypting secrets
+│    │      secrets.yaml - Encrypted secrets
+│    └──phpapp - Helm chart for deploying our PHP app to Kubernetes cluster
+│    │  └───templates - All templates we are deploying for our PHP app
+│    │          _helpers.tmpl - Helm helper functions to be used in templates
+│    │          configmap.yaml - Configmap with Nginx config which is needed for PHP FPM setup as well as some additional custom configuration
+│    │          deployment.yaml - Actual deployment of PHP app and Nginx container
+│    │          service.yaml - Service with help of which you will be able to access the application
+│    │       Chart.yaml - Chart metadata
+│    │       values.yaml.gotmpl - Configurable application values, generally you don't need to change anything here for it to work
+│    └──postgresql - Contains values overriding default values of Bitnaming PostgreSQL Helm Chart
+│           values.yaml.gotmpl - List of values which we override for this Helm Chart
+└───tests - Contains integration tests for the application, which are run with docker-compose
+│       Dockerfile - Since we run this in docker compose, we need to have the tests as Docker container
+│       run-tests.py - Quick and ugly Python script to perform integration tests
+└───files - Files which didn't fit anywhere else
+        default.conf - Nginx config which Docker compose uses
+    docker-compose.yml - Docker compose for local development which reproduces Helm charts pretty closely
+    helmfile.yaml - Helmfile which eases the deployment of multiple charts in different namespaces
 ```
 
 ### Prerequisites

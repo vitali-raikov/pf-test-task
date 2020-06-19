@@ -10,7 +10,7 @@ if(!$db_connection){
     returnError("Problem connecting to database", 500);
 }
 
-# Create schema if not exists
+# Create table if not exists
 $query = "CREATE TABLE IF NOT EXISTS blacklist (
     id SERIAL PRIMARY KEY,
     path VARCHAR(255) NOT NULL,
