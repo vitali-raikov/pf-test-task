@@ -6,6 +6,19 @@ This project deploys PHP application with help of Nginx and PHP-FPM running in s
 
 This was tested using Minikube installation on macOS.
 
+## About application
+
+Its a very simple PHP application with couple of endpoints
+
+```
+/ - Expects n query parameter and if it receives it, calculates n*n and returns the result
+/blacklisted - Blacklists current user IP, sends an Email
+/status - Status check for readinessProbe and livenessProbe
+/unblock - Unblocks user IP. I added it only to simplify testing and for use by docker-compose tests to unblock the IP after testing everything. Theoretically redundant if we have a separate docker-compose only for testing
+```
+
+Checking if user is blacklisted and connection to database is separated into separate failes in `lib/check.php` and `lib.db.php` accordingly.
+
 ## Tools used
 - [Minikube](https://github.com/kubernetes/minikube)
 - [Helm3](https://github.com/helm/helm)
