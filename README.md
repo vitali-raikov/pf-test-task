@@ -70,19 +70,23 @@ project
 
 Instructions below are written for macOS however it should be easily adaptable for any Linux distribution as well.
 
-We also assume that you have Docker installed on your machine so we are not going to describe process of installing Docker here.
+We assume that you have Homebrew and Docker installed on your machine so we are not going to describe process of installing Docker and Homebrew here.
 
-1. Make sure you have minikube installed
+1. Make sure you have minikube installed along with hyperkit (if you want to use Hyperkit as a driver)
 
-`brew install minikube`
+`brew install minikube hyperkit`
 
-2. Install helm3 and helmfile
+2. Install helm3 and helmfile as well as gnu-getopt to avoid some warnings
 
-`brew install helm helmfile`
+`brew install helm helmfile gnu-getopt`
 
 3. Install helm-secrets
 
 `helm plugin install https://github.com/futuresimple/helm-secrets`
+
+4. Install gpg-suite. This is not a required step, however if you are importing existing key it's much easier to have it installed.
+
+`brew cask install gpg-suite`
 
 ## Usage
 
