@@ -35,7 +35,7 @@ services:
   # We could persist data here in separate volume
   # But for testing purposes I decided against that
   postgres:
-    image: postgres:latest
+    image: postgres:12.3-alpine
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
