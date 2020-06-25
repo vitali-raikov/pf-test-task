@@ -26,7 +26,7 @@ Checking if user is blacklisted and connection to database is separated into sep
 - [Helm Secrets](https://github.com/zendesk/helm-secrets)
 - [Docker Compose](https://github.com/docker/compose)
 - [Nginx](https://nginx.org/x)
-- [PHP-FPM container by Bitnami](https://github.com/bitnami/bitnami-docker-php-fpm)
+- [PHP-FPM docker image by Bitnami](https://github.com/bitnami/bitnami-docker-php-fpm)
 - [PostgreSQL](https://www.postgresql.org/) (in Minikube we use [Bitnami Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) as well)
 
 ## Project structure
